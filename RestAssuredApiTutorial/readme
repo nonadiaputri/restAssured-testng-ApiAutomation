@@ -1,0 +1,26 @@
+Create POJO 
+
+1. Create class based on the req payload need  
+2. In that class create define the parameter  
+Ex :   
+	private boolean depositpaid;  
+	private int totalprice;  
+	private String additionalneeds;  
+	private BookingDates bookingdates;  
+
+3. Create set n get for that param  
+4. Create 2 contractor, one empty, one have param  
+Ex : 
+<img width="556" height="86" alt="Image" src="https://github.com/user-attachments/assets/5339dc62-4634-4c34-a744-012cf00b93f1" />  
+5. In api class, create put the input n object mapper  
+<img width="719" height="150" alt="Image" src="https://github.com/user-attachments/assets/6a403e5d-6e5c-46d9-a236-9cd6369d0ea4" />  
+6. Then send it using rest assured  
+<img width="693" height="226" alt="Image" src="https://github.com/user-attachments/assets/d81754bd-edab-440d-bf31-412e52de36da" />  ￼
+7. Assert the response using deserialize  
+<img width="522" height="201" alt="Image" src="https://github.com/user-attachments/assets/c093afc0-da39-476d-ab08-1a471c503086" />  
+￼
+￼
+
+
+Note :  
+Use ctrl+space for reference in java  

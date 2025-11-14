@@ -1,25 +1,83 @@
-Create POJO 
+## 🧱 How to Create POJO for API Automation (Rest Assured + Java)
 
-1. Create class based on the req payload need  
-2. In that class create define the parameter  
-Ex :   
-	private boolean depositpaid;  
-	private int totalprice;  
-	private String additionalneeds;  
-	private BookingDates bookingdates;  
+Below are the steps to create a POJO (Plain Old Java Object) for request payloads, send API requests using Rest Assured, and perform assertions using deserialization.
 
-3. Create set n get for that param  
-4. Create 2 contractor, one empty, one have param  
-Ex : 
-<img width="556" height="86" alt="Image" src="https://github.com/user-attachments/assets/5339dc62-4634-4c34-a744-012cf00b93f1" />  
-5. In api class, create put the input n object mapper  
-<img width="719" height="150" alt="Image" src="https://github.com/user-attachments/assets/6a403e5d-6e5c-46d9-a236-9cd6369d0ea4" />  
-6. Then send it using rest assured  
-<img width="693" height="226" alt="Image" src="https://github.com/user-attachments/assets/d81754bd-edab-440d-bf31-412e52de36da" />  ￼
-7. Assert the response using deserialize  
-<img width="522" height="201" alt="Image" src="https://github.com/user-attachments/assets/c093afc0-da39-476d-ab08-1a471c503086" />  
-￼
-￼
+---
+
+### **1. Create Class Based on the Required Request Payload**
+
+Create a Java class that matches the structure of your API payload.
+Example payload:
+
+```json
+{
+  "depositpaid": true,
+  "totalprice": 150,
+  "additionalneeds": "Breakfast",
+  "bookingdates": {
+    "checkin": "2024-01-01",
+    "checkout": "2024-01-05"
+  }
+}
+
+### **2. Define All Required Parameters in the Class*  
+Example :  
+```json
+private boolean depositpaid;
+private int totalprice;
+private String additionalneeds;
+private BookingDates bookingdates;
+
+### **3. Generate Setter and Getter for Each Parameter*   
+Use Generate → Getter & Setter in IntelliJ / Eclipse.  
+
+### **4. Create Two Constructors (Empty & With Parameters)*   
+The empty constructor is required for serialization/deserialization.  
+The parameterized constructor makes it easier to build payloads.  
+```json  
+public Booking() {
+}
+
+public Booking(boolean depositpaid, int totalprice, String additionalneeds, BookingDates bookingdates) {
+    this.depositpaid = depositpaid;
+    this.totalprice = totalprice;
+    this.additionalneeds = additionalneeds;
+    this.bookingdates = bookingdates;
+}
+
+### **5. Create Input in API Class & Convert POJO to JSON Using ObjectMapper*   
+Use ObjectMapper to convert the POJO into a JSON string.  
+```json
+Booking payload = new Booking(
+        true,
+        150,
+        "Breakfast",
+        new BookingDates("2024-01-01", "2024-01-05")
+);
+
+ObjectMapper objectMapper = new ObjectMapper();
+String jsonBody = objectMapper.writeValueAsString(payload);  
+
+### **6. Create Input in API Class & Convert POJO to JSON Using ObjectMapper* 
+Send the API Request Using Rest Assured  
+``json  
+Response response = given()
+        .contentType("application/json")
+        .body(jsonBody)
+        .when()
+        .post("/booking");
+
+### **7. Assert the Response Using Deserialization (Convert JSON → POJO)*  
+Deserialize the response body into a POJO for easier assertion.   
+```json  
+BookingResponse bookingResponse = objectMapper.readValue(
+        response.getBody().asString(),
+        BookingResponse.class
+);
+
+Assert.assertEquals(bookingResponse.getBooking().getTotalprice(), 150);
+Assert.assertEquals(bookingResponse.getBooking().getAdditionalneeds(), "Breakfast");
+
 
 
 Note :  
